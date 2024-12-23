@@ -8,9 +8,9 @@ from flask_mail import Mail, Message
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, JWTManager
 from datetime import timedelta
-# from bursary application
 from marshmallow import pre_load, post_load
 from werkzeug.utils import secure_filename
+from flask_mail import Mail, Message
 
 
 # Initialize Flask app
@@ -25,13 +25,23 @@ CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DEL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'public/images'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'jfif'}
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10MB
 
 
 # Load the secret key from an environment variable for better security
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "your_secret_key")  # Ensure to set this in your environment
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set token expiration time
+
+# Configure Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'adenabdib.com'
+app.config['MAIL_PASSWORD'] = 'pbhwyziglzyipxix'
+
+mail = Mail(app)
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -549,6 +559,27 @@ def delete_achievement(id):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 # end of the key-achievement functionality
+
+
+# start of the email functioninality
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.json
+    recipient = data['recipient']
+    subject = data['subject']
+    body = data['body']
+    
+    msg = Message(subject, recipients=[recipient])
+    msg.body = body
+    
+    try:
+        mail.send(msg)
+        return jsonify({"message": "Email sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": "Failed to send email", "error": str(e)}), 500
+
+
+
 
 
 # -------------------- Main Function --------------------

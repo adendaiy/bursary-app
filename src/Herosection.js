@@ -44,7 +44,7 @@ const HeroSection = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
   const handleApplyNowClick = () => {
-    navigate('/login'); // Redirect to the login page
+    navigate('/Registration'); // Redirect to the login page
   };
 
   return (

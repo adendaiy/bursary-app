@@ -226,7 +226,7 @@ function CustomNavbar({ isAuthenticated, user, handleLogout }) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto fs-6">
             <Nav.Link as={Link} to="/" className="nav-link-custom"><FaHome size={16} className="me-1" /> Home</Nav.Link>
-            <Nav.Link as={Link} to="/apply-for-bursary" className="nav-link-custom"><FaFileAlt size={16} className="me-1" /> Apply For Bursary</Nav.Link>
+            <Nav.Link as={Link} to="/login" className="nav-link-custom"><FaFileAlt size={16} className="me-1" /> Apply For Bursary</Nav.Link>
             <Nav.Link as={Link} to="/about" className="nav-link-custom"><FaInfoCircle size={16} className="me-1" /> About Us</Nav.Link>
             <Nav.Link as={Link} to="/achievements" className="nav-link-custom"><FaTrophy size={16} className="me-1" /> Key Achievements</Nav.Link>
 
